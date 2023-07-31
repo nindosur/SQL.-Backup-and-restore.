@@ -1,0 +1,66 @@
+Решение с помощью T-SQL:
+--Задание 1.
+--1
+BACKUP DATABASE Продажи
+TO DISK = 'D:\Backups\Продажи_full.bak'
+WITH FORMAT;
+
+--2
+--Вставка данных
+INSERT INTO Клиенты (ФИО, Адрес, Телефон)
+VALUES ('Иванов Иван Иванович', 'г. Москва, ул. Ленина, д.10', '8-800-555-35-35')
+
+--Обновление данных
+UPDATE Заказы
+SET Сумма = 15000
+WHERE Номер = 2
+
+--Удаление данных
+DELETE FROM Товары
+WHERE Наименование = 'Монитор Samsung'
+
+--3
+BACKUP DATABASE Продажи
+TO DISK = 'D:\Backups\Продажи_diff.bak'
+WITH DIFFERENTIAL;
+
+--4
+--Вставка данных
+INSERT INTO Продавцы (ФИО, Адрес, Телефон)
+VALUES ('Петров Петр Петрович', 'г. Москва, ул. Гагарина, д.20', '8-800-555-35-36')
+
+--Удаление данных
+DELETE FROM Заказы
+WHERE Номер = 3
+
+--Обновление данных
+UPDATE Заказы
+SET Дата = '2021-07-15'
+WHERE Номер = 1
+
+--5
+BACKUP LOG Продажи
+TO DISK = 'D:\Backups\Продажи_log.trn'
+WITH NORECOVERY;
+
+_________________________________________________________
+
+--Задание 2.
+--1
+RESTORE DATABASE Продажи
+FROM DISK = 'D:\Backups\Продажи_full.bak'
+WITH REPLACE;
+
+--2
+RESTORE DATABASE Продажи
+FROM DISK = 'D:\Backups\Продажи_diff.bak'
+WITH NORECOVERY;
+
+RESTORE DATABASE Продажи
+FROM DISK = 'D:\Backups\Продажи_full.bak'
+WITH RECOVERY;
+
+--3
+RESTORE LOG Продажи
+FROM DISK = 'D:\Backups\Продажи_log.trn'
+WITH NORECOVERY;
